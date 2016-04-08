@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using Grabacr07.KanColleViewer.Composition;
+using Grabacr07.KanColleWrapper;
 using KCVDB.KanColleViewerPlugin.Models.Database;
 
 namespace KCVDB.KanColleViewerPlugin
@@ -18,10 +18,36 @@ namespace KCVDB.KanColleViewerPlugin
 	[Export(typeof(ITool))]
 	public sealed class KCVDBSenderPlugin : IPlugin, ITool, IDisposable
 	{
+		CompositeDisposable Disposables { get; } = new CompositeDisposable();
 		ApiSender apiSender_;
 
 		public void Initialize()
 		{
+			Disposables.Add(KanColleClient.Current.Proxy.SessionSource
+				.Where(x => x.Request.PathAndQuery == "/netgame/social/-/gadgets/=/app_id=854854/")
+				.Subscribe(x => CreateNewSender()));
+		}
+		
+		public void Cleanup()
+		{
+			Disposables.Dispose();
+
+			apiSender_?.Dispose();
+			apiSender_ = null;
+		}
+
+		void CreateNewSender()
+		{
+			if (apiSender_ != null) {
+				var senderToBeDisposed = apiSender_;
+				senderToBeDisposed.ReadyToBeDisposed += (_, __) => {
+					senderToBeDisposed.Dispose();
+				};
+				senderToBeDisposed.PrepareShutdown();
+
+				apiSender_ = null;
+			}
+
 			apiSender_ = new ApiSender();
 		}
 
@@ -43,7 +69,7 @@ namespace KCVDB.KanColleViewerPlugin
 		{
 			if (isDisposed_) { return; }
 
-			apiSender_?.Dispose();
+			Cleanup();
 
 			isDisposed_ = true;
 			GC.SuppressFinalize(this);

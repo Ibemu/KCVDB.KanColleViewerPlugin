@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Linq;
-using System.Net;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 using Grabacr07.KanColleWrapper;
 using KCVDB.Client;
 using KCVDB.KanColleViewerPlugin.Utilities;
@@ -15,20 +12,30 @@ namespace KCVDB.KanColleViewerPlugin.Models.Database
 	{
 		static string DateHeaderKey { get; } = "date";
 
-		IKCVDBClient client_;
-		
-		CompositeDisposable Disposable { get; } = new CompositeDisposable();
+		CompositeDisposable Subscriptions { get; } = new CompositeDisposable();
+		IKCVDBClient Client { get; }
 
+		int queueLength_;
+		bool isShuttingDown_;
 
 		public ApiSender()
 		{
 			HttpProxy.AfterReadRequestHeaders += HttpProxy_AfterReadRequestHeaders;
 			HttpProxy.AfterReadResponseHeaders += HttpProxy_AfterReadResponseHeaders;
-			Disposable.Add(KanColleClient.Current.Proxy.ApiSessionSource
+			Subscriptions.Add(KanColleClient.Current.Proxy.ApiSessionSource
 				.Subscribe(OnSession));
 
-			client_ = KCVDBClientService.Instance.CreateClient(Constants.KCVDB.AgentId);
-			Disposable.Add(client_);
+			Client = KCVDBClientService.Instance.CreateClient(Constants.KCVDB.AgentId);
+
+			Client.ApiDataSent += Client_ApiDataSent;
+		}
+
+		private void Client_ApiDataSent(object sender, ApiDataSentEventArgs e)
+		{
+			queueLength_--;
+			if (isShuttingDown_ && queueLength_ == 0) {
+				this.ReadyToBeDisposed?.Invoke(this, EventArgs.Empty);
+			}
 		}
 
 		private void HttpProxy_AfterReadResponseHeaders(HttpResponse obj)
@@ -53,24 +60,41 @@ namespace KCVDB.KanColleViewerPlugin.Models.Database
 				string httpDate;
 				session.Response.Headers.Headers.TryGetValue(DateHeaderKey, out httpDate);
 
-				client_.SendRequestDataAsync(
+				Client.SendRequestDataAsync(
 					requestUri,
 					statusCode,
 					requestBody,
 					responseBody,
 					httpDate);
+				queueLength_++;
 			}
 			catch (Exception ex) {
 				Console.WriteLine(ex);
 			}
 		}
 
+		public void PrepareShutdown()
+		{
+			Subscriptions.Dispose();
+
+			if (queueLength_ == 0) {
+				this.ReadyToBeDisposed?.Invoke(this, EventArgs.Empty);
+			}
+		}
+
+		public event EventHandler ReadyToBeDisposed;
+
 		#region IDisposable メンバ
 		bool isDisposed_;
 		public void Dispose()
 		{
 			if (isDisposed_) { return; }
-			Disposable.Dispose();
+
+			if (!Subscriptions.IsDisposed) {
+				Subscriptions.Dispose();
+			}
+			Client.Dispose();
+
 			isDisposed_ = true;
 			GC.SuppressFinalize(this);
 		}
