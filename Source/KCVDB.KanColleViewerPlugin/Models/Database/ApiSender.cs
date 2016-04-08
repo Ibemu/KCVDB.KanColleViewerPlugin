@@ -75,8 +75,9 @@ namespace KCVDB.KanColleViewerPlugin.Models.Database
 
 		public void PrepareShutdown()
 		{
-			Subscriptions.Dispose();
+			isShuttingDown_ = true;
 
+			Subscriptions.Dispose();
 			if (queueLength_ == 0) {
 				this.ReadyToBeDisposed?.Invoke(this, EventArgs.Empty);
 			}
