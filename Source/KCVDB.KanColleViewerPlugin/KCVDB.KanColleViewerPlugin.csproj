@@ -42,8 +42,8 @@
       <HintPath>..\packages\KanColleWrapper.1.5.1\lib\net46\KanColleWrapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="KCVDB.Client, Version=0.0.0.8, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\KCVDB.Client.0.0.0.8\lib\net45\KCVDB.Client.dll</HintPath>
+    <Reference Include="KCVDB.Client, Version=0.0.13.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\KCVDB.Client.0.0.13.0\lib\net45\KCVDB.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
