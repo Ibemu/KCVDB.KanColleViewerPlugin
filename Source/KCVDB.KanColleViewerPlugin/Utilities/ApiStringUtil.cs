@@ -1,10 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 
 namespace KCVDB.KanColleViewerPlugin.Utilities
 {
-	internal class ApiStringUtil
+	static class ApiStringUtil
 	{
 		public static string RequestStringTokenParameterKey { get; } = "api_token";
 

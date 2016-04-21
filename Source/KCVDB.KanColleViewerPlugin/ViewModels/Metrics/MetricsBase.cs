@@ -1,0 +1,94 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Studiotaiha.Toolkit;
+
+namespace KCVDB.KanColleViewerPlugin.ViewModels.Metrics
+{
+	abstract class MetricsBase : BindableBase, IMetrics, IDisposable
+	{
+		protected CompositeDisposable Subscriptions { get; } = new CompositeDisposable();
+
+		public string TitleResourceName{get;}
+
+		public MetricsBase(string titleResourceName)
+		{
+			if (titleResourceName == null) { throw new ArgumentNullException(nameof(titleResourceName)); }
+			TitleResourceName = titleResourceName;
+		
+			Subscriptions.Add(Observable.FromEventPattern<PropertyChangedEventArgs>(ResourceHolder.Instance, nameof(ResourceHolder.PropertyChanged))
+				.Where(x => x.EventArgs.PropertyName == nameof(ResourceHolder.Resources))
+				.SubscribeOnDispatcher()
+				.Subscribe(_ => {
+					UpdateTitle();
+				}));
+
+			UpdateTitle();
+		}
+
+		#region Title
+		string title_;
+		public string Title
+		{
+			get
+			{
+				return title_;
+			}
+			private set
+			{
+				SetValue(ref title_, value);
+			}
+		}
+		#endregion
+
+		#region ValueText
+		string value_;
+		public string ValueText
+		{
+			get
+			{
+				return value_;
+			}
+			private set
+			{
+				SetValue(ref value_, value);
+			}
+		}
+		#endregion
+
+		protected abstract string ConvertValueToString();
+
+		protected void UpdateValueText()
+		{
+			this.ValueText = ConvertValueToString();
+		}
+
+		protected void UpdateTitle()
+		{
+			this.Title = ResourceHolder.Instance.GetString(TitleResourceName);
+		}
+
+		#region IDisposable メンバ
+		bool isDisposed_ = false;
+		virtual protected void Dispose(bool disposing)
+		{
+			if (isDisposed_) { return; }
+			if (disposing) {
+				Subscriptions.Dispose();
+			}
+			isDisposed_ = true;
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+		#endregion
+	}
+}
