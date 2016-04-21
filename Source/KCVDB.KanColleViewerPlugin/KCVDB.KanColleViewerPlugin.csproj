@@ -120,9 +120,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\ApiStringUtil.cs" />
     <Compile Include="Utilities\LocalizationUtil.cs" />
     <Compile Include="Utilities\MetricsUtil.cs" />
+    <Compile Include="ViewModels\DelegateCommand.cs" />
     <Compile Include="ViewModels\HistoryItem.cs" />
     <Compile Include="ViewModels\HistoryObservableCollection.cs" />
     <Compile Include="ViewModels\IMetrics.cs" />
@@ -143,13 +149,19 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\KanColleViewer.PluginAnalyzer.1.1.1.0\analyzers\KanColleViewer.Composition.dll" />
     <Analyzer Include="..\packages\KanColleViewer.PluginAnalyzer.1.1.1.0\analyzers\KanColleViewer.PluginAnalyzer.dll" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.zh-TW.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <SubType>Designer</SubType>
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -158,6 +170,7 @@
     <EmbeddedResource Include="Properties\Resources.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.zh-CN.resx" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Styles\Colors.xaml">
@@ -181,7 +194,13 @@ copy "$(TargetDir)\KCVDB.Client.dll" "$(SolutionDir)\Debug\KanColleViewer\plugin
 copy "$(TargetDir)\TaihaToolkit.Core.dll" "$(SolutionDir)\Debug\KanColleViewer\plugins"
 
 mkdir "$(SolutionDir)\Debug\KanColleViewer\plugins\en"
-copy "$(TargetDir)\en\KCVDB.KanColleViewerPlugin.resources.dll" "$(SolutionDir)\Debug\KanColleViewer\plugins\en"</PostBuildEvent>
+copy "$(TargetDir)\en\KCVDB.KanColleViewerPlugin.resources.dll" "$(SolutionDir)\Debug\KanColleViewer\plugins\en"
+
+mkdir "$(SolutionDir)\Debug\KanColleViewer\plugins\zh-CN"
+copy "$(TargetDir)\zh-CN\KCVDB.KanColleViewerPlugin.resources.dll" "$(SolutionDir)\Debug\KanColleViewer\plugins\zh-CN"
+
+mkdir "$(SolutionDir)\Debug\KanColleViewer\plugins\zh-TW"
+copy "$(TargetDir)\zh-TW\KCVDB.KanColleViewerPlugin.resources.dll" "$(SolutionDir)\Debug\KanColleViewer\plugins\zh-TW"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

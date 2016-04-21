@@ -120,6 +120,10 @@
   <data name="AuthorName" xml:space="preserve">
     <value>艦これ検証部</value>
   </data>
+  <data name="ButtonLabelSwitchChinese" xml:space="preserve">
+    <value>(ﾟдﾟ)</value>
+    <comment>Button label to switch the language between zh-CN and zh-TW</comment>
+  </data>
   <data name="CopyrightYear" xml:space="preserve">
     <value>2016</value>
   </data>

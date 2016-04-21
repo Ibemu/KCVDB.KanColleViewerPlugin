@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
@@ -22,5 +23,8 @@ namespace KCVDB.KanColleViewerPlugin.Views.Converters
 	}
 
 	class BoolBrushConverter : BoolConverterBase<Brush>
+	{ }
+
+	class BoolVisibilityConverter : BoolConverterBase<Visibility>
 	{ }
 }

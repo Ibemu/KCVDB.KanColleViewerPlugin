@@ -70,6 +70,15 @@ namespace KCVDB.KanColleViewerPlugin.Properties {
         }
         
         /// <summary>
+        ///   (ﾟдﾟ) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ButtonLabelSwitchChinese {
+            get {
+                return ResourceManager.GetString("ButtonLabelSwitchChinese", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   2016 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string CopyrightYear {

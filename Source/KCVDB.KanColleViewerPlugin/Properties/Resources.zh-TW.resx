@@ -118,11 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AuthorName" xml:space="preserve">
-    <value>KanColle Verification Team</value>
+    <value>艦收驗證部</value>
     <comment>Team name</comment>
   </data>
   <data name="ButtonLabelSwitchChinese" xml:space="preserve">
-    <value>(ﾟдﾟ)</value>
+    <value>繁簡切換</value>
     <comment>Button label to switch the language between zh-CN and zh-TW</comment>
   </data>
   <data name="CopyrightYear" xml:space="preserve">
@@ -130,32 +130,32 @@
     <comment>Copyright year shown in footer</comment>
   </data>
   <data name="HistoryListTitle" xml:space="preserve">
-    <value>History</value>
+    <value>上傳歷史記錄</value>
     <comment>Title of the history list</comment>
   </data>
   <data name="MetricsTitleDataAmountPerHour" xml:space="preserve">
-    <value>Data transferred / hour</value>
+    <value>傳輸量 / 小時</value>
   </data>
   <data name="MetricsTitleFailureCount" xml:space="preserve">
-    <value># of Failure</value>
+    <value>上傳失敗次數</value>
   </data>
   <data name="MetricsTitleNumApisTransferred" xml:space="preserve">
-    <value># of APIs transferred</value>
+    <value>上傳完畢API數</value>
   </data>
   <data name="MetricsTitleSessionId" xml:space="preserve">
     <value>Session ID</value>
   </data>
   <data name="MetricsTitleStartedAt" xml:space="preserve">
-    <value>Started at</value>
+    <value>上傳開始時間</value>
   </data>
   <data name="MetricsTitleSuccessCount" xml:space="preserve">
-    <value># of Success</value>
+    <value>上傳成功次數</value>
   </data>
   <data name="MetricsTitleTotalDataAmountSent" xml:space="preserve">
-    <value>Total data transferred</value>
+    <value>總傳輸量</value>
   </data>
   <data name="PluginName" xml:space="preserve">
-    <value>KCVDB Data Sending Plugin</value>
+    <value>KCVDB資料上傳插件</value>
     <comment>Plugin name shown in</comment>
   </data>
   <data name="ToolPluginName" xml:space="preserve">
@@ -163,7 +163,7 @@
     <comment>Caption shown as tool plugin title</comment>
   </data>
   <data name="VersionStringTemplate" xml:space="preserve">
-    <value>Version {0}.{1}.{2}</value>
+    <value>版本{0}.{1}.{2}</value>
     <comment>{0}: Major, {1}: Minor, {2}: build</comment>
   </data>
   <data name="WebUrl" xml:space="preserve">
