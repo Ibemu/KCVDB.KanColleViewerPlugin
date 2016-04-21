@@ -97,10 +97,19 @@
 			
 			<!--Buttons-->
 			<UniformGrid Grid.Row="2" Grid.Column="0"
-						 Margin="0,5,0,2"
-						 Columns="0" 
+						 Margin="0,5,0,0"
+						 Columns="1" 
 						 VerticalAlignment="Bottom">
-				<Button Content="繁簡切替"
+				
+				<!--MSKR button-->
+				<Button Content="MSKR"
+						Visibility="{Binding Path=IsMisakuraButtonEnabled, Mode=OneWay, Converter={StaticResource TrueVisibleConverter}}"
+						Margin="0,1,0,1"
+						Command="{Binding Path=MisakuraCommand}"/>
+				
+				<!--Switch Chinese button-->
+				<Button Content="{Binding Path=Resources.ButtonLabelSwitchChinese, Mode=OneWay, Source={x:Static app:ResourceHolder.Instance}}"
+						Margin="0,1,0,1"
 						Visibility="{Binding Path=IsSwitchChineseButtonEnabled, Mode=OneWay, Converter={StaticResource TrueVisibleConverter}}"
 						Command="{Binding Path=SwitchChineseCommand}"/>
 			</UniformGrid>

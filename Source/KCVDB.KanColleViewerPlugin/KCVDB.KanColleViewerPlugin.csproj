@@ -126,8 +126,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Utilities\ApiStringUtil.cs" />
+    <Compile Include="Utilities\DependencyObjectExtensions.cs" />
+    <Compile Include="Utilities\HyperText.cs" />
     <Compile Include="Utilities\LocalizationUtil.cs" />
     <Compile Include="Utilities\MetricsUtil.cs" />
+    <Compile Include="Utilities\MisakuraConverter.cs" />
     <Compile Include="ViewModels\DelegateCommand.cs" />
     <Compile Include="ViewModels\HistoryItem.cs" />
     <Compile Include="ViewModels\HistoryObservableCollection.cs" />

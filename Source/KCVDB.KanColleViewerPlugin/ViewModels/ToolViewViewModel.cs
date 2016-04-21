@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using KCVDB.Client;
 using KCVDB.KanColleViewerPlugin.Properties;
+using KCVDB.KanColleViewerPlugin.Utilities;
 using KCVDB.KanColleViewerPlugin.ViewModels.Metrics;
 using Studiotaiha.Toolkit;
 
@@ -16,6 +18,7 @@ namespace KCVDB.KanColleViewerPlugin.ViewModels
 		int MaxHistoryCount { get; } = 20;
 		IKCVDBClient Client { get; }
 		CompositeDisposable Subscriptions { get; } = new CompositeDisposable();
+		bool isMisakuraRunning_;
 
 		public ToolViewViewModel(
 			IKCVDBClient client,
@@ -146,6 +149,10 @@ namespace KCVDB.KanColleViewerPlugin.ViewModels
 			{
 				if (SetValue(value) || value == null) {
 					IsSwitchChineseButtonEnabled = value == "zh";
+					IsMisakuraButtonEnabled = (
+						!this.isMisakuraRunning_ &&
+						(value == "ja" || (value == null && CultureInfo.CurrentCulture?.TwoLetterISOLanguageName == "ja"))
+					);
 				}
 			}
 		}
@@ -165,12 +172,25 @@ namespace KCVDB.KanColleViewerPlugin.ViewModels
 		}
 		#endregion
 
+		#region IsMisakuraButtonEnabled
+		public bool IsMisakuraButtonEnabled
+		{
+			get
+			{
+				return GetValue<bool>();
+			}
+			set
+			{
+				SetValue(value);
+			}
+		}
+		#endregion
+
 		#endregion // Bindings
 
 
 		#region Commands
-
-
+		
 		#region SwitchChineseCommand
 		DelegateCommand switchChineseCommand_ = null;
 		public DelegateCommand SwitchChineseCommand
@@ -183,6 +203,26 @@ namespace KCVDB.KanColleViewerPlugin.ViewModels
 					},
 					CanExecuteHandler = param => {
 						return IsSwitchChineseButtonEnabled;
+					}
+				});
+			}
+		}
+		#endregion
+		
+		#region MisakuraCommand
+		DelegateCommand misakuraCommand_ = null;
+		public DelegateCommand MisakuraCommand
+		{
+			get
+			{
+				return misakuraCommand_ ?? (misakuraCommand_ = new DelegateCommand(this, nameof(IsMisakuraButtonEnabled)) {
+					ExecuteHandler = param => {
+						Subscriptions.Add(LocalizationUtil.StartMisakura());
+						isMisakuraRunning_ = true;
+						IsMisakuraButtonEnabled = false;
+					},
+					CanExecuteHandler = param => {
+						return IsMisakuraButtonEnabled;
 					}
 				});
 			}
