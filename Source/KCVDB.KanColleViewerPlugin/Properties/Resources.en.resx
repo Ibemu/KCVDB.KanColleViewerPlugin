@@ -121,6 +121,10 @@
     <value>KanColle Verification Team</value>
     <comment>Team name</comment>
   </data>
+  <data name="ButtonLabelSwitchChinese" xml:space="preserve">
+    <value>(ﾟдﾟ)</value>
+    <comment>Button label to switch the language between zh-CN and zh-TW</comment>
+  </data>
   <data name="CopyrightYear" xml:space="preserve">
     <value>2016</value>
     <comment>Copyright year shown in footer</comment>

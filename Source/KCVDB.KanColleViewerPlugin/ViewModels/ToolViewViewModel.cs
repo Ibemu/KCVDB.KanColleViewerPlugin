@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using KCVDB.Client;
+using KCVDB.KanColleViewerPlugin.Properties;
 using KCVDB.KanColleViewerPlugin.ViewModels.Metrics;
 using Studiotaiha.Toolkit;
 
@@ -51,7 +53,26 @@ namespace KCVDB.KanColleViewerPlugin.ViewModels
 					HistoryItems = new ObservableCollection<HistoryItem>(
 						historyItems.Reverse().Concat(HistoryItems).Take(MaxHistoryCount));
 				});
+
+			// Register a listener to notify chinese option chaning
+			Subscriptions.Add(Observable.FromEventPattern<PropertyChangedEventArgs>(Settings.Default, nameof(Settings.PropertyChanged))
+				.Where(x => x.EventArgs.PropertyName == nameof(Settings.ShowTraditionalChinese))
+				.SubscribeOnDispatcher()
+				.Subscribe(_ => {
+					RaisePropertyChanged(nameof(ShowTraditionalChinese));
+				}));
+
+			// Register a listener to receive language switching event
+			Subscriptions.Add(Observable.FromEventPattern<PropertyChangedEventArgs>(ResourceHolder.Instance, nameof(ResourceHolder.PropertyChanged))
+				.Where(x => x.EventArgs.PropertyName == nameof(ResourceHolder.Culture))
+				.SubscribeOnDispatcher()
+				.Subscribe(_ => {
+					CurrentLanguageTwoLetterName = ResourceHolder.Instance.Culture?.TwoLetterISOLanguageName;
+				}));
+
+			CurrentLanguageTwoLetterName = ResourceHolder.Instance.Culture?.TwoLetterISOLanguageName;
 		}
+
 
 		#region Bindings
 
@@ -99,22 +120,92 @@ namespace KCVDB.KanColleViewerPlugin.ViewModels
 		}
 		#endregion
 
+		#region ShowTraditionalChinese
+		public bool ShowTraditionalChinese
+		{
+			get
+			{
+				return Settings.Default.ShowTraditionalChinese;
+			}
+			set
+			{
+				Settings.Default.ShowTraditionalChinese = value;
+				Settings.Default.Save();
+			}
+		}
+		#endregion
+
+		#region CurrentLanguageTwoLetterName
+		public string CurrentLanguageTwoLetterName
+		{
+			get
+			{
+				return GetValue<string>();
+			}
+			private set
+			{
+				if (SetValue(value) || value == null) {
+					IsSwitchChineseButtonEnabled = value == "zh";
+				}
+			}
+		}
+		#endregion
+
+		#region IsSwitchChineseButtonEnabled
+		public bool IsSwitchChineseButtonEnabled
+		{
+			get
+			{
+				return GetValue<bool>();
+			}
+			private set
+			{
+				SetValue(value);
+			}
+		}
+		#endregion
+
 		#endregion // Bindings
 
-		
+
+		#region Commands
+
+
+		#region SwitchChineseCommand
+		DelegateCommand switchChineseCommand_ = null;
+		public DelegateCommand SwitchChineseCommand
+		{
+			get
+			{
+				return switchChineseCommand_ ?? (switchChineseCommand_ = new DelegateCommand(this, nameof(IsSwitchChineseButtonEnabled)) {
+					ExecuteHandler = param => {
+						ShowTraditionalChinese = !ShowTraditionalChinese;
+					},
+					CanExecuteHandler = param => {
+						return IsSwitchChineseButtonEnabled;
+					}
+				});
+			}
+		}
+		#endregion
+
+		#endregion // Commands
+
+
 		#region IDisposable メンバ
 		bool isDisposed_ = false;
 		virtual protected void Dispose(bool disposing)
 		{
+			if (isDisposed_) { return; }
+			if (disposing) {
+				Subscriptions.Dispose();
+			}
+			isDisposed_ = true;
 		}
 
 		public void Dispose()
 		{
-			if (isDisposed_) { return; }
-
-			Subscriptions.Dispose();
-
-			isDisposed_ = true;
+			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 		#endregion

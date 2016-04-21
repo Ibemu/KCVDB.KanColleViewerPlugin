@@ -23,6 +23,9 @@
 			<conv:BoolBrushConverter x:Key="SuccessStrokeBrushConverter"
 									 TrueValue="{StaticResource SuccessHistoryStrokeBrush}"
 									 FalseValue="{StaticResource FailureHistoryStorkeBrush}" />
+			<conv:BoolVisibilityConverter x:Key="TrueVisibleConverter"
+										  TrueValue="Visible"
+										  FalseValue="Collapsed" />
 		</ResourceDictionary>
 	</UserControl.Resources>
 
@@ -35,6 +38,7 @@
 		<!--Body-->
 		<Grid Grid.Row="0">
 			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="*" />
 			</Grid.RowDefinitions>
@@ -62,7 +66,7 @@
 			<!--Custom metrics-->
 			<ItemsControl Grid.Row="1" Grid.Column="0"
 						  ItemsSource="{Binding Path=CustomMetrics}"
-						  HorizontalAlignment="Stretch" VerticalAlignment="Top">
+						  HorizontalAlignment="Stretch">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
 						<StackPanel Margin="1">
@@ -91,8 +95,18 @@
 				</ItemsControl.ItemsPanel>
 			</ItemsControl>
 			
+			<!--Buttons-->
+			<UniformGrid Grid.Row="2" Grid.Column="0"
+						 Margin="0,5,0,2"
+						 Columns="0" 
+						 VerticalAlignment="Bottom">
+				<Button Content="繁簡切替"
+						Visibility="{Binding Path=IsSwitchChineseButtonEnabled, Mode=OneWay, Converter={StaticResource TrueVisibleConverter}}"
+						Command="{Binding Path=SwitchChineseCommand}"/>
+			</UniformGrid>
+			
 			<!--History-->
-			<Grid Grid.Row="0" Grid.Column="1" Grid.RowSpan="2"
+			<Grid Grid.Row="0" Grid.Column="1" Grid.RowSpan="3"
 				  Margin="5,0,0,0" VerticalAlignment="Stretch">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="Auto" />
@@ -153,7 +167,7 @@
 		<Border Grid.Row="1"
 				BorderBrush="{StaticResource FooterBorderBrush}"
 				BorderThickness="0,1,0,0"
-				Margin="2">
+				Margin="0,2,0,2">
 			<StackPanel Orientation="Horizontal"
 						HorizontalAlignment="Right">
 				
@@ -165,7 +179,7 @@
 					<TextBlock.Text>
 						<MultiBinding Converter="{StaticResource MultipleParameterResourceStringConverter}" ConverterParameter="VersionStringTemplate">
 							<Binding Path="CurrentVersion.Major" Source="{x:Static app:PluginInfo.Instance}" />
-							<Binding Path="CurrentVersion.Major" Source="{x:Static app:PluginInfo.Instance}" />
+							<Binding Path="CurrentVersion.Minor" Source="{x:Static app:PluginInfo.Instance}" />
 							<Binding Path="CurrentVersion.Build" Source="{x:Static app:PluginInfo.Instance}" />
 						</MultiBinding>
 					</TextBlock.Text>

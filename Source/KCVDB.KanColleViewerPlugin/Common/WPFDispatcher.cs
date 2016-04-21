@@ -3,6 +3,8 @@ using System.Threading;
 using System.Windows.Threading;
 using Studiotaiha.Toolkit;
 
+// Copied from TiahaToolkit.WPF
+
 namespace KCVDB.KanColleViewerPlugin
 {
 	public class WPFDispatcher : IDispatcher

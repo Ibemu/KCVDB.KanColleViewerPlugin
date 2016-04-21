@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Globalization;
 using System.Windows.Threading;
@@ -8,6 +9,7 @@ using KCVDB.KanColleViewerPlugin.Properties;
 using KCVDB.KanColleViewerPlugin.Utilities;
 using KCVDB.KanColleViewerPlugin.ViewModels;
 using KCVDB.KanColleViewerPlugin.Views;
+using MetroTrilithon.Lifetime;
 
 namespace KCVDB.KanColleViewerPlugin
 {
@@ -27,6 +29,7 @@ namespace KCVDB.KanColleViewerPlugin
 		public void Initialize()
 		{
 			ResourceHolder.Instance.Culture = LocalizationUtil.GetCurrentAppCulture();
+			UpdateChineseCulture();
 
 			var sessionId = Guid.NewGuid().ToString();
 			apiSender_ = new ApiSender(sessionId);
@@ -34,10 +37,23 @@ namespace KCVDB.KanColleViewerPlugin
 				apiSender_.Client,
 				sessionId,
 				new WPFDispatcher(Dispatcher.CurrentDispatcher));
+
+			Settings.Default.PropertyChanged += Settings_PropertyChanged;
 		}
 
-		#region IDisposable メンバ
-		bool isDisposed_ = false;
+		private void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			UpdateChineseCulture();
+		}
+
+		void UpdateChineseCulture()
+		{
+			if (ResourceHolder.Instance.Culture?.TwoLetterISOLanguageName == "zh") {
+				ResourceHolder.Instance.Culture = Settings.Default.ShowTraditionalChinese
+					? new CultureInfo("zh-TW")
+					: new CultureInfo("zh-CN");
+			}
+		}
 
 		public string Name => Resources.ToolPluginName;
 
@@ -59,18 +75,25 @@ namespace KCVDB.KanColleViewerPlugin
 			else {
 				ResourceHolder.Instance.Culture = CultureInfo.GetCultureInfo(cultureName);
 			}
-		}
 
+			UpdateChineseCulture();
+		}
+		
+		#region IDisposable Member
+
+		bool isDisposed_ = false;
 		public void Dispose()
 		{
 			if (isDisposed_) { return; }
 
 			apiSender_?.Dispose();
 			viewModel_?.Dispose();
+			Settings.Default.PropertyChanged -= Settings_PropertyChanged;
 
 			isDisposed_ = true;
 			GC.SuppressFinalize(this);
 		}
+
 		#endregion
 	}
 }
