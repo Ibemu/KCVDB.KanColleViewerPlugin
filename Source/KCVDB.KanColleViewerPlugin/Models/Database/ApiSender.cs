@@ -15,20 +15,20 @@ namespace KCVDB.KanColleViewerPlugin.Models.Database
 	{
 		static string DateHeaderKey { get; } = "date";
 
-		IKCVDBClient client_;
-		
+		public IKCVDBClient Client { get; }
+
 		CompositeDisposable Disposable { get; } = new CompositeDisposable();
 
 
-		public ApiSender()
+		public ApiSender(string sessionId)
 		{
 			HttpProxy.AfterReadRequestHeaders += HttpProxy_AfterReadRequestHeaders;
 			HttpProxy.AfterReadResponseHeaders += HttpProxy_AfterReadResponseHeaders;
 			Disposable.Add(KanColleClient.Current.Proxy.ApiSessionSource
 				.Subscribe(OnSession));
 
-			client_ = KCVDBClientService.Instance.CreateClient(Constants.KCVDB.AgentId);
-			Disposable.Add(client_);
+			Client = KCVDBClientService.Instance.CreateClient(Constants.KCVDB.AgentId, sessionId);
+			Disposable.Add(Client);
 		}
 
 		private void HttpProxy_AfterReadResponseHeaders(HttpResponse obj)
@@ -53,7 +53,7 @@ namespace KCVDB.KanColleViewerPlugin.Models.Database
 				string httpDate;
 				session.Response.Headers.Headers.TryGetValue(DateHeaderKey, out httpDate);
 
-				client_.SendRequestDataAsync(
+				Client.SendRequestDataAsync(
 					requestUri,
 					statusCode,
 					requestBody,
