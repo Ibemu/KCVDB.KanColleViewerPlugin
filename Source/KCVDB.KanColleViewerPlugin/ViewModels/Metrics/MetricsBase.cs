@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Studiotaiha.Toolkit;
 
 namespace KCVDB.KanColleViewerPlugin.ViewModels.Metrics
 {
-	abstract class MetricsBase : BindableBase, IMetrics, IDisposable
+	abstract class MetricsBase : NotificationObject, IMetrics, IDisposable
 	{
 		protected CompositeDisposable Subscriptions { get; } = new CompositeDisposable();
 
