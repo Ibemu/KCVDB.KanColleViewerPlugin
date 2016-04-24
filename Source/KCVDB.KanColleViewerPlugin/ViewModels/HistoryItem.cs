@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Studiotaiha.Toolkit;
 
 namespace KCVDB.KanColleViewerPlugin.ViewModels
 {
-	class HistoryItem : BindableBase
+	class HistoryItem : NotificationObjectWithPropertyBag
 	{
 		#region TemeSent
 		public DateTimeOffset Time

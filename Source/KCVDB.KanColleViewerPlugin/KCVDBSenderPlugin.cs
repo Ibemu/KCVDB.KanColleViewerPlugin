@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Globalization;
 using System.Windows.Threading;
@@ -9,7 +8,7 @@ using KCVDB.KanColleViewerPlugin.Properties;
 using KCVDB.KanColleViewerPlugin.Utilities;
 using KCVDB.KanColleViewerPlugin.ViewModels;
 using KCVDB.KanColleViewerPlugin.Views;
-using MetroTrilithon.Lifetime;
+using Studiotaiha.Toolkit;
 
 namespace KCVDB.KanColleViewerPlugin
 {

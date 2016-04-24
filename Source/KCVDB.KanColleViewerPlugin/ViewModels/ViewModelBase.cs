@@ -2,7 +2,7 @@
 
 namespace KCVDB.KanColleViewerPlugin.ViewModels
 {
-	class ViewModelBase : BindableBase
+	class ViewModelBase : NotificationObjectWithPropertyBag
 	{
 		public ViewModelBase(IDispatcher dispatcher)
 			: base(dispatcher)
