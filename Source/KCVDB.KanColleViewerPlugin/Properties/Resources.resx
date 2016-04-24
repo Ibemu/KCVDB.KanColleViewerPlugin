@@ -171,7 +171,7 @@
     <value>KCVDB</value>
   </data>
   <data name="VersionInfoUrl" xml:space="preserve">
-    <value>http://kcvdb.jp/plugin/version.php</value>
+    <value>http://kcvdb.jp/plugin_version/latest/KCVDB.KanColleViewerPlugin</value>
   </data>
   <data name="VersionStringTemplate" xml:space="preserve">
     <value>Version {0}.{1}.{2}</value>

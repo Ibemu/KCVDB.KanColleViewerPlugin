@@ -9,7 +9,7 @@ namespace KCVDB.KanColleViewerPlugin.Models.Updating
 		[DataMember(IsRequired = false)]
 		public bool IsEmergency { get; set; }
 
-		[DataMember(Name = "name", IsRequired = true)]
+		[DataMember(Name = "Version", IsRequired = true)]
 		public string VersionString { get; set; }
 
 		public bool IsNewerThan(string currentVersion)
