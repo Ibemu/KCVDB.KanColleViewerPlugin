@@ -1,0 +1,27 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	<SolidColorBrush x:Key="SessionIdTitleBackgroundBrush" Color="Black" />
+	<SolidColorBrush x:Key="SessionIdValueBackgroundBrush" Color="#949493" />
+	<SolidColorBrush x:Key="SessionIdTitleForegroundBrush" Color="White" />
+	<SolidColorBrush x:Key="SessionIdValueForegroundBrush" Color="White" />
+	
+	<SolidColorBrush x:Key="MetricsTitleBackgroundBrush" Color="#4e4e4d" />
+	<SolidColorBrush x:Key="MetricsValueBackgroundBrush" Color="#949493" />
+	<SolidColorBrush x:Key="MetricsTitleForegroundBrush" Color="White" />
+	<SolidColorBrush x:Key="MetricsValueForegroundBrush" Color="White" />
+
+	<SolidColorBrush x:Key="SuccessHistoryFillBrush" Color="Blue" />
+	<SolidColorBrush x:Key="FailureHistoryFillBrush" Color="Red" />
+	<SolidColorBrush x:Key="SuccessHistoryStrokeBrush" Color="DarkBlue" />
+	<SolidColorBrush x:Key="FailureHistoryStorkeBrush" Color="DarkRed" />
+
+
+	<SolidColorBrush x:Key="HistoryIdTitleBackgroundBrush" Color="Black" />
+	<SolidColorBrush x:Key="HistoryIdTitleForegroundBrush" Color="White" />
+	<SolidColorBrush x:Key="HistoryOddBackgroundBrush" Color="#949493" />
+	<SolidColorBrush x:Key="HistoryEvenBackgroundBrush" Color="#4e4e4d" />
+
+	<SolidColorBrush x:Key="FooterBorderBrush" Color="WhiteSmoke" />
+</ResourceDictionary>
