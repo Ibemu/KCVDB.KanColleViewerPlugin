@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace KCVDB.KanColleViewerPlugin
+﻿namespace KCVDB.KanColleViewerPlugin
 {
 	static class Constants
 	{
@@ -12,5 +6,7 @@ namespace KCVDB.KanColleViewerPlugin
 		{
 			public static string AgentId { get; } = "KCVDB.KanColleViewerPlugin";
 		}
+
+		public static string ApplicationInsightInstrumentationKey { get; } = "{Key to here}";
 	}
 }

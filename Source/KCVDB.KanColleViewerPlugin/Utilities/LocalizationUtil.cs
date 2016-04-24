@@ -31,7 +31,7 @@ namespace KCVDB.KanColleViewerPlugin.Utilities
 		}
 
 
-		static Application GetApplication()
+		public static Application GetApplication()
 		{
 			var applicationType = AppDomain.CurrentDomain.GetAssemblies()
 				.FirstOrDefault(x => x.GetName().Name == "KanColleViewer")

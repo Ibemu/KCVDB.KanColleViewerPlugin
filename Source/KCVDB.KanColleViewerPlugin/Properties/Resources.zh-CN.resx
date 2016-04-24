@@ -154,9 +154,19 @@
   <data name="MetricsTitleTotalDataAmountSent" xml:space="preserve">
     <value>总传输量</value>
   </data>
+  <data name="NewerVersionAvailableMessage" xml:space="preserve">
+    <value>KCVDB 数据上传插件有更新。
+需要开启最新版本的下载页面吗?</value>
+  </data>
+  <data name="NewerVersionAvailableMessageEmergencyPrefix" xml:space="preserve">
+    <value>【紧急更新】</value>
+  </data>
   <data name="PluginName" xml:space="preserve">
     <value>KCVDB数据上传插件</value>
     <comment>Plugin name shown in</comment>
+  </data>
+  <data name="SettingCaptionEnableSendingTelemetry" xml:space="preserve">
+    <value>将传输错误之类的信息上传至KCVDB(下次启动时生效)</value>
   </data>
   <data name="ToolPluginName" xml:space="preserve">
     <value>KCVDB</value>

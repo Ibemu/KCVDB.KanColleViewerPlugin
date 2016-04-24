@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Reactive.Linq;
 using KCVDB.Client;
+using KCVDB.KanColleViewerPlugin.Telemetry;
+using Studiotaiha.Toolkit;
 
 namespace KCVDB.KanColleViewerPlugin.ViewModels.Metrics
 {
@@ -19,8 +21,14 @@ namespace KCVDB.KanColleViewerPlugin.ViewModels.Metrics
 				.Buffer(WindowSpan)
 				.SubscribeOnDispatcher(System.Windows.Threading.DispatcherPriority.Normal)
 				.Subscribe(list => {
-					count_ += list.Sum(e => e.TrackingIds.Count());
-					UpdateValueText();
+					try {
+						count_ += list.Sum(e => e.TrackingIds.Count());
+						UpdateValueText();
+					}
+					catch (Exception ex) {
+						if (ex.IsCritical()) { throw; }
+						TelemetryClient.TrackException("Failed to update # of APIs transferred metrics.", ex);
+					}
 				}));
 
 			UpdateValueText();

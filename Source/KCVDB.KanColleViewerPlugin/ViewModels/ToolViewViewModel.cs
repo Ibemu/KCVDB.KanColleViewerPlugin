@@ -7,6 +7,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using KCVDB.Client;
 using KCVDB.KanColleViewerPlugin.Properties;
+using KCVDB.KanColleViewerPlugin.Telemetry;
 using KCVDB.KanColleViewerPlugin.Utilities;
 using KCVDB.KanColleViewerPlugin.ViewModels.Metrics;
 using Studiotaiha.Toolkit;
@@ -53,8 +54,14 @@ namespace KCVDB.KanColleViewerPlugin.ViewModels
 				})
 				.SubscribeOnDispatcher(System.Windows.Threading.DispatcherPriority.Normal)
 				.Subscribe(historyItems => {
-					HistoryItems = new ObservableCollection<HistoryItem>(
-						historyItems.Reverse().Concat(HistoryItems).Take(MaxHistoryCount));
+					try {
+						HistoryItems = new ObservableCollection<HistoryItem>(
+							historyItems.Reverse().Concat(HistoryItems).Take(MaxHistoryCount));
+					}
+					catch (Exception ex) {
+						TelemetryClient.TrackException("Failed to update history.", ex);
+						if (ex.IsCritical()) { throw; }
+					}
 				});
 
 			// Register a listener to notify chinese option chaning
@@ -62,7 +69,14 @@ namespace KCVDB.KanColleViewerPlugin.ViewModels
 				.Where(x => x.EventArgs.PropertyName == nameof(Settings.ShowTraditionalChinese))
 				.SubscribeOnDispatcher()
 				.Subscribe(_ => {
-					RaisePropertyChanged(nameof(ShowTraditionalChinese));
+					try {
+						RaisePropertyChanged(nameof(EnableSendingTelemetry));
+						RaisePropertyChanged(nameof(ShowTraditionalChinese));
+					}
+					catch (Exception ex) {
+						TelemetryClient.TrackException("Failed to raise property chaning of show traditional chinese option", ex);
+						if (ex.IsCritical()) { throw; }
+					}
 				}));
 
 			// Register a listener to receive language switching event
@@ -70,7 +84,13 @@ namespace KCVDB.KanColleViewerPlugin.ViewModels
 				.Where(x => x.EventArgs.PropertyName == nameof(ResourceHolder.Culture))
 				.SubscribeOnDispatcher()
 				.Subscribe(_ => {
-					CurrentLanguageTwoLetterName = ResourceHolder.Instance.Culture?.TwoLetterISOLanguageName;
+					try {
+						CurrentLanguageTwoLetterName = ResourceHolder.Instance.Culture?.TwoLetterISOLanguageName;
+					}
+					catch (Exception ex) {
+						TelemetryClient.TrackException("Failed to update current language two letter name.", ex);
+						if (ex.IsCritical()) { throw; }
+					}
 				}));
 
 			CurrentLanguageTwoLetterName = ResourceHolder.Instance.Culture?.TwoLetterISOLanguageName;
@@ -133,6 +153,22 @@ namespace KCVDB.KanColleViewerPlugin.ViewModels
 			set
 			{
 				Settings.Default.ShowTraditionalChinese = value;
+				Settings.Default.Save();
+			}
+		}
+		#endregion
+
+
+		#region EnableSendingTelemetry
+		public bool EnableSendingTelemetry
+		{
+			get
+			{
+				return !Settings.Default.StopSendingTelemetry;
+			}
+			set
+			{
+				Settings.Default.StopSendingTelemetry = !value;
 				Settings.Default.Save();
 			}
 		}

@@ -42,8 +42,8 @@
       <HintPath>..\packages\KanColleWrapper.1.5.1\lib\net46\KanColleWrapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="KCVDB.Client, Version=0.0.15.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\KCVDB.Client.0.0.15.0\lib\net45\KCVDB.Client.dll</HintPath>
+    <Reference Include="KCVDB.Client, Version=0.0.17.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\KCVDB.Client.0.0.17.0\lib\net45\KCVDB.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
@@ -52,6 +52,10 @@
     </Reference>
     <Reference Include="MetroTrilithon, Version=0.1.7.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MetroTrilithon.0.1.7\lib\portable-net45+win+wp80+MonoAndroid10+xamarinios10+MonoTouch10\MetroTrilithon.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.0.1\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Nekoxy, Version=1.5.2.20, Culture=neutral, processorArchitecture=MSIL">
@@ -87,6 +91,7 @@
       <HintPath>..\packages\Rx-XAML.2.2.5\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -117,6 +122,8 @@
     <Compile Include="Common\ResourceHolder.cs" />
     <Compile Include="KCVDBSenderPlugin.cs" />
     <Compile Include="Models\Database\ApiSender.cs" />
+    <Compile Include="Models\Updating\LatestVersionInfo.cs" />
+    <Compile Include="Models\Updating\LatestVersionInfoRetriever.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -128,12 +135,16 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Telemetry\TelemetryClientExtensions.cs" />
+    <Compile Include="Telemetry\TelemetryInitializer.cs" />
+    <Compile Include="Telemetry\TelemetryService.cs" />
     <Compile Include="Utilities\ApiStringUtil.cs" />
     <Compile Include="Utilities\DependencyObjectExtensions.cs" />
     <Compile Include="Utilities\HyperText.cs" />
     <Compile Include="Utilities\LocalizationUtil.cs" />
     <Compile Include="Utilities\MetricsUtil.cs" />
     <Compile Include="Utilities\MisakuraConverter.cs" />
+    <Compile Include="Utilities\WebUtil.cs" />
     <Compile Include="ViewModels\HistoryItem.cs" />
     <Compile Include="ViewModels\HistoryObservableCollection.cs" />
     <Compile Include="ViewModels\IMetrics.cs" />
@@ -205,6 +216,8 @@ copy "$(TargetDir)\KCVDB.KanColleViewerPlugin.dll" "$(SolutionDir)\Debug\KanColl
 copy "$(TargetDir)\KCVDB.Client.dll" "$(SolutionDir)\Debug\KanColleViewer\plugins"
 copy "$(TargetDir)\TaihaToolkit.Core.dll" "$(SolutionDir)\Debug\KanColleViewer\plugins"
 copy "$(TargetDir)\TaihaToolkit.WPF.dll" "$(SolutionDir)\Debug\KanColleViewer\plugins"
+copy "$(TargetDir)\Microsoft.ApplicationInsights.dll" "$(SolutionDir)\Debug\KanColleViewer\plugins"
+
 
 mkdir "$(SolutionDir)\Debug\KanColleViewer\plugins\en"
 copy "$(TargetDir)\en\KCVDB.KanColleViewerPlugin.resources.dll" "$(SolutionDir)\Debug\KanColleViewer\plugins\en"

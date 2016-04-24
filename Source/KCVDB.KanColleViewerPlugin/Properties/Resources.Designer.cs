@@ -97,6 +97,15 @@ namespace KCVDB.KanColleViewerPlugin.Properties {
         }
         
         /// <summary>
+        ///   http://kcvdb.jp/KanColleViewer に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string KcvdbPluginWebUrl {
+            get {
+                return ResourceManager.GetString("KcvdbPluginWebUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   転送量 / 時 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string MetricsTitleDataAmountPerHour {
@@ -160,11 +169,39 @@ namespace KCVDB.KanColleViewerPlugin.Properties {
         }
         
         /// <summary>
-        ///   KCVDBデータ送信プラグイン に類似しているローカライズされた文字列を検索します。
+        ///   KCVDB データ送信プラグインの更新があります。
+        ///最新版の取得ページを開きますか？ に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string NewerVersionAvailableMessage {
+            get {
+                return ResourceManager.GetString("NewerVersionAvailableMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   【緊急更新】 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string NewerVersionAvailableMessageEmergencyPrefix {
+            get {
+                return ResourceManager.GetString("NewerVersionAvailableMessageEmergencyPrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   KCVDB データ送信プラグイン に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string PluginName {
             get {
                 return ResourceManager.GetString("PluginName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   送信エラー情報などをKCVDBに送信する（次回起動時反映） に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SettingCaptionEnableSendingTelemetry {
+            get {
+                return ResourceManager.GetString("SettingCaptionEnableSendingTelemetry", resourceCulture);
             }
         }
         
@@ -174,6 +211,15 @@ namespace KCVDB.KanColleViewerPlugin.Properties {
         public static string ToolPluginName {
             get {
                 return ResourceManager.GetString("ToolPluginName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   http://kcvdb.jp/plugin/version.php に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string VersionInfoUrl {
+            get {
+                return ResourceManager.GetString("VersionInfoUrl", resourceCulture);
             }
         }
         

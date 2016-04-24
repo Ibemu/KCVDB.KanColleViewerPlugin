@@ -95,7 +95,7 @@
 				</ItemsControl.ItemsPanel>
 			</ItemsControl>
 			
-			<!--Buttons-->
+			<!--Additional Controls-->
 			<UniformGrid Grid.Row="2" Grid.Column="0"
 						 Margin="0,5,0,0"
 						 Columns="1" 
@@ -112,6 +112,11 @@
 						Margin="0,1,0,1"
 						Visibility="{Binding Path=IsSwitchChineseButtonEnabled, Mode=OneWay, Converter={StaticResource TrueVisibleConverter}}"
 						Command="{Binding Path=SwitchChineseCommand}"/>
+
+				<!--Enable telemetry checkbox-->
+				<CheckBox Content="{Binding Path=Resources.SettingCaptionEnableSendingTelemetry, Mode=OneWay, Source={x:Static app:ResourceHolder.Instance}}"
+						  VerticalAlignment="Center"
+						  IsChecked="{Binding Path=EnableSendingTelemetry, Mode=TwoWay}" />
 			</UniformGrid>
 			
 			<!--History-->

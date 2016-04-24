@@ -16,5 +16,7 @@ namespace KCVDB.KanColleViewerPlugin
 		{ }
 
 		public Version CurrentVersion { get; } = Assembly.GetExecutingAssembly().GetName().Version;
+
+		public string CurrentVersionString => string.Format("{0}.{1}.{2}", CurrentVersion.Major, CurrentVersion.Minor, CurrentVersion.Build);
 	}
 }
