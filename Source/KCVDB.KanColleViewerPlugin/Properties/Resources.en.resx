@@ -165,6 +165,9 @@ Would you like to open a web page to download the latest version?</value>
     <value>KCVDB Data Sending Plugin</value>
     <comment>Plugin name shown in</comment>
   </data>
+  <data name="SettingCaptionEnableSendingTelemetry" xml:space="preserve">
+    <value>Send usage data to KCVDB (Needs restarting to apply)</value>
+  </data>
   <data name="ToolPluginName" xml:space="preserve">
     <value>KCVDB</value>
     <comment>Caption shown as tool plugin title</comment>

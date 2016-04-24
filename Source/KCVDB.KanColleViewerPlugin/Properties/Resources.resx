@@ -164,6 +164,9 @@
   <data name="PluginName" xml:space="preserve">
     <value>KCVDB データ送信プラグイン</value>
   </data>
+  <data name="SettingCaptionEnableSendingTelemetry" xml:space="preserve">
+    <value>送信エラー情報などをKCVDBに送信する（次回起動時反映）</value>
+  </data>
   <data name="ToolPluginName" xml:space="preserve">
     <value>KCVDB</value>
   </data>

@@ -70,6 +70,7 @@ namespace KCVDB.KanColleViewerPlugin.ViewModels
 				.SubscribeOnDispatcher()
 				.Subscribe(_ => {
 					try {
+						RaisePropertyChanged(nameof(EnableSendingTelemetry));
 						RaisePropertyChanged(nameof(ShowTraditionalChinese));
 					}
 					catch (Exception ex) {
@@ -152,6 +153,22 @@ namespace KCVDB.KanColleViewerPlugin.ViewModels
 			set
 			{
 				Settings.Default.ShowTraditionalChinese = value;
+				Settings.Default.Save();
+			}
+		}
+		#endregion
+
+
+		#region EnableSendingTelemetry
+		public bool EnableSendingTelemetry
+		{
+			get
+			{
+				return !Settings.Default.StopSendingTelemetry;
+			}
+			set
+			{
+				Settings.Default.StopSendingTelemetry = !value;
 				Settings.Default.Save();
 			}
 		}

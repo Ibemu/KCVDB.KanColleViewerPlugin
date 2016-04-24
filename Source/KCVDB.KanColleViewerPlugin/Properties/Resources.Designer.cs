@@ -197,6 +197,15 @@ namespace KCVDB.KanColleViewerPlugin.Properties {
         }
         
         /// <summary>
+        ///   送信エラー情報などをKCVDBに送信する（次回起動時反映） に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SettingCaptionEnableSendingTelemetry {
+            get {
+                return ResourceManager.GetString("SettingCaptionEnableSendingTelemetry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   KCVDB に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string ToolPluginName {

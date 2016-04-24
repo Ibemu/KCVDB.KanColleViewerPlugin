@@ -14,8 +14,8 @@ namespace KCVDB.KanColleViewerPlugin.Models.Updating
 
 		public bool IsNewerThan(string currentVersion)
 		{
-			var latestTokens = VersionString.Split('.');
-			var currentTokens = currentVersion.Split('.');
+			var latestTokens = VersionString.Trim().Split('.');
+			var currentTokens = currentVersion.Trim().Split('.');
 
 			for (int i = 0; i < latestTokens.Length; i++) {
 				var latest = int.Parse(latestTokens[i]);

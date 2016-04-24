@@ -165,6 +165,9 @@
     <value>KCVDB数据上传插件</value>
     <comment>Plugin name shown in</comment>
   </data>
+  <data name="SettingCaptionEnableSendingTelemetry" xml:space="preserve">
+    <value>将传输错误之类的信息上传至KCVDB(下次启动时生效)</value>
+  </data>
   <data name="ToolPluginName" xml:space="preserve">
     <value>KCVDB</value>
     <comment>Caption shown as tool plugin title</comment>
