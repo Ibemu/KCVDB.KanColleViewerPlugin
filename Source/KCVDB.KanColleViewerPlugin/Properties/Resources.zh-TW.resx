@@ -154,6 +154,13 @@
   <data name="MetricsTitleTotalDataAmountSent" xml:space="preserve">
     <value>總傳輸量</value>
   </data>
+  <data name="NewerVersionAvailableMessage" xml:space="preserve">
+    <value>KCVDB 資料上傳插件有更新。
+需要開啟最新版本的下載頁面嗎?</value>
+  </data>
+  <data name="NewerVersionAvailableMessageEmergencyPrefix" xml:space="preserve">
+    <value>【緊急更新】</value>
+  </data>
   <data name="PluginName" xml:space="preserve">
     <value>KCVDB資料上傳插件</value>
     <comment>Plugin name shown in</comment>

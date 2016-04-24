@@ -3,12 +3,15 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using KCVDB.KanColleViewerPlugin.Telemetry;
+using Microsoft.ApplicationInsights;
 using Studiotaiha.Toolkit;
 
 namespace KCVDB.KanColleViewerPlugin.ViewModels.Metrics
 {
 	abstract class MetricsBase : NotificationObject, IMetrics, IDisposable
 	{
+		protected TelemetryClient TelemetryClient => TelemetryService.Instance.Client;
 		protected CompositeDisposable Subscriptions { get; } = new CompositeDisposable();
 
 		public string TitleResourceName{get;}

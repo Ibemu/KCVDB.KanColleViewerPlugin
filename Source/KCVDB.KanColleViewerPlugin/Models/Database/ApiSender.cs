@@ -6,8 +6,11 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Grabacr07.KanColleWrapper;
 using KCVDB.Client;
+using KCVDB.KanColleViewerPlugin.Telemetry;
 using KCVDB.KanColleViewerPlugin.Utilities;
+using Microsoft.ApplicationInsights;
 using Nekoxy;
+using Studiotaiha.Toolkit;
 
 namespace KCVDB.KanColleViewerPlugin.Models.Database
 {
@@ -15,35 +18,69 @@ namespace KCVDB.KanColleViewerPlugin.Models.Database
 	{
 		static string DateHeaderKey { get; } = "date";
 
-		public IKCVDBClient Client { get; }
-
+		TelemetryClient TelemetryClient { get; } = TelemetryService.Instance.Client;
 		CompositeDisposable Disposable { get; } = new CompositeDisposable();
+		public IKCVDBClient KcvdbClient { get; }
 
-
+		bool shouldStopSending_;
+		
 		public ApiSender(string sessionId)
 		{
-			HttpProxy.AfterReadRequestHeaders += HttpProxy_AfterReadRequestHeaders;
-			HttpProxy.AfterReadResponseHeaders += HttpProxy_AfterReadResponseHeaders;
 			Disposable.Add(KanColleClient.Current.Proxy.ApiSessionSource
 				.Subscribe(OnSession));
 
-			Client = KCVDBClientService.Instance.CreateClient(Constants.KCVDB.AgentId, sessionId);
-			Disposable.Add(Client);
+			KcvdbClient = KCVDBClientService.Instance.CreateClient(Constants.KCVDB.AgentId, sessionId);
+			Disposable.Add(KcvdbClient);
+
+			KcvdbClient.FatalError += KcvdbClient_FatalError;
+			KcvdbClient.InternalError += KcvdbClient_InternalError;
+			KcvdbClient.SendingError += KcvdbClient_SendingError;
 		}
 
-		private void HttpProxy_AfterReadResponseHeaders(HttpResponse obj)
+		private void KcvdbClient_SendingError(object sender, SendingErrorEventArgs e)
 		{
-			Console.WriteLine(obj);
+			try {
+				TelemetryClient.TrackException("Sending error catched.", e.Exception, new {
+					ErrorMessage = e.Message,
+					Reason = e.Reason,
+				});
+			}
+			catch (Exception ex) {
+				if (ex.IsCritical()) { throw; }
+			}
 		}
 
-		private void HttpProxy_AfterReadRequestHeaders(HttpRequest obj)
+		private void KcvdbClient_InternalError(object sender, InternalErrorEventArgs e)
 		{
-			Console.WriteLine(obj);
+			try {
+				TelemetryClient.TrackException("KCVDB internal error catched", e.Exception, new {
+					ErrorMessage = e.Message,
+				});
+			}
+			catch (Exception ex) {
+				if (ex.IsCritical()) { throw; }
+			}
+		}
+
+		private void KcvdbClient_FatalError(object sender, FatalErrorEventArgs e)
+		{
+			try {
+				shouldStopSending_ = true;
+
+				TelemetryClient.TrackException("KCVDB Fatal error catched", e.Exception, new {
+					ErrorMessage = e.Message,
+				});
+			}
+			catch (Exception ex) {
+				if (ex.IsCritical()) { throw; }
+			}
 		}
 
 		void OnSession(Session session)
 		{
 			try {
+				if (shouldStopSending_) { return; }
+				
 				var requestUri = Uri.IsWellFormedUriString(session.Request.RequestLine.URI, UriKind.Absolute)
 				? new Uri(session.Request.RequestLine.URI, UriKind.Absolute)
 				: new Uri(string.Format("http://{0}{1}", session.Request.Headers.Host, session.Request.PathAndQuery), UriKind.Absolute);
@@ -53,7 +90,7 @@ namespace KCVDB.KanColleViewerPlugin.Models.Database
 				string httpDate;
 				session.Response.Headers.Headers.TryGetValue(DateHeaderKey, out httpDate);
 
-				Client.SendRequestDataAsync(
+				KcvdbClient.SendRequestDataAsync(
 					requestUri,
 					statusCode,
 					requestBody,
@@ -61,7 +98,8 @@ namespace KCVDB.KanColleViewerPlugin.Models.Database
 					httpDate);
 			}
 			catch (Exception ex) {
-				Console.WriteLine(ex);
+				TelemetryClient.TrackException("Failed to enqueue session data", ex);
+				if (ex.IsCritical()) { throw; }
 			}
 		}
 

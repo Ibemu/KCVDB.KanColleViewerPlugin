@@ -154,6 +154,13 @@
   <data name="MetricsTitleTotalDataAmountSent" xml:space="preserve">
     <value>Total data transferred</value>
   </data>
+  <data name="NewerVersionAvailableMessage" xml:space="preserve">
+    <value>New version of KCVDB Data Sending Plugin is available.
+Would you like to open a web page to download the latest version?</value>
+  </data>
+  <data name="NewerVersionAvailableMessageEmergencyPrefix" xml:space="preserve">
+    <value>[Emergency update]</value>
+  </data>
   <data name="PluginName" xml:space="preserve">
     <value>KCVDB Data Sending Plugin</value>
     <comment>Plugin name shown in</comment>

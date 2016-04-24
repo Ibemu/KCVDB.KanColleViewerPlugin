@@ -34,5 +34,17 @@ namespace KCVDB.KanColleViewerPlugin.Properties {
                 this["ShowTraditionalChinese"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool StopSendingTelemetry {
+            get {
+                return ((bool)(this["StopSendingTelemetry"]));
+            }
+            set {
+                this["StopSendingTelemetry"] = value;
+            }
+        }
     }
 }

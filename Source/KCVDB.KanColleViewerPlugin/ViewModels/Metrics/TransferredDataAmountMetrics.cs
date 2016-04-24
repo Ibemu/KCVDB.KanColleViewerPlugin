@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Reactive.Linq;
 using KCVDB.Client;
+using KCVDB.KanColleViewerPlugin.Telemetry;
 using KCVDB.KanColleViewerPlugin.Utilities;
+using Studiotaiha.Toolkit;
 
 namespace KCVDB.KanColleViewerPlugin.ViewModels.Metrics
 {
@@ -20,8 +22,14 @@ namespace KCVDB.KanColleViewerPlugin.ViewModels.Metrics
 				.Buffer(WindowSpan)
 				.SubscribeOnDispatcher(System.Windows.Threading.DispatcherPriority.Normal)
 				.Subscribe(list => {
-					bytesSent_ += list.Sum(e => e.SentApiData.PayloadByteCount);
-					UpdateValueText();
+					try {
+						bytesSent_ += list.Sum(e => e.SentApiData.PayloadByteCount);
+						UpdateValueText();
+					}
+					catch (Exception ex) {
+						if (ex.IsCritical()) { throw; }
+						TelemetryClient.TrackException("Failed to update transferred data amount metrics.", ex);
+					}
 				}));
 
 			UpdateValueText();

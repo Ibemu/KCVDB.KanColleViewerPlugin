@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using KCVDB.Client;
+using KCVDB.KanColleViewerPlugin.Telemetry;
 using KCVDB.KanColleViewerPlugin.Utilities;
+using Studiotaiha.Toolkit;
 
 namespace KCVDB.KanColleViewerPlugin.ViewModels.Metrics
 {
@@ -26,12 +28,18 @@ namespace KCVDB.KanColleViewerPlugin.ViewModels.Metrics
 				.Select(x => x.EventArgs)
 				.Buffer(WindowSpan)
 				.Subscribe(list => {
-					var now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-					lock (ListLock) {
-						foreach (var e in list) {
-							History.AddLast(new Tuple<long, int>(now, e.SentApiData.PayloadByteCount));
-							isListUpdated_ = true;
+					try {
+						var now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+						lock (ListLock) {
+							foreach (var e in list) {
+								History.AddLast(new Tuple<long, int>(now, e.SentApiData.PayloadByteCount));
+								isListUpdated_ = true;
+							}
 						}
+					}
+					catch (Exception ex) {
+						if (ex.IsCritical()) { throw; }
+						TelemetryClient.TrackException("Failed to add transferred api info to the list.", ex);
 					}
 				}));
 
@@ -41,7 +49,15 @@ namespace KCVDB.KanColleViewerPlugin.ViewModels.Metrics
 					return x;
 				})
 				.SubscribeOnDispatcher(System.Windows.Threading.DispatcherPriority.Normal)
-				.Subscribe(_ => UpdateValueText()));
+				.Subscribe(_ => {
+					try {
+						UpdateValueText();
+					}
+					catch (Exception ex) {
+						if (ex.IsCritical()) { throw; }
+						TelemetryClient.TrackException("Failed to update transferred data mount per hour metrics.", ex);
+					}
+				}));
 
 			UpdateValueText();
 		}

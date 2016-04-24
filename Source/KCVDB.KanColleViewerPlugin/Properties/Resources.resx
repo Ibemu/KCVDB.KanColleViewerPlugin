@@ -130,6 +130,9 @@
   <data name="HistoryListTitle" xml:space="preserve">
     <value>送信履歴</value>
   </data>
+  <data name="KcvdbPluginWebUrl" xml:space="preserve">
+    <value>http://kcvdb.jp/KanColleViewer</value>
+  </data>
   <data name="MetricsTitleDataAmountPerHour" xml:space="preserve">
     <value>転送量 / 時</value>
   </data>
@@ -151,11 +154,21 @@
   <data name="MetricsTitleTotalDataAmountSent" xml:space="preserve">
     <value>総転送量</value>
   </data>
+  <data name="NewerVersionAvailableMessage" xml:space="preserve">
+    <value>KCVDB データ送信プラグインの更新があります。
+最新版の取得ページを開きますか？</value>
+  </data>
+  <data name="NewerVersionAvailableMessageEmergencyPrefix" xml:space="preserve">
+    <value>【緊急更新】</value>
+  </data>
   <data name="PluginName" xml:space="preserve">
-    <value>KCVDBデータ送信プラグイン</value>
+    <value>KCVDB データ送信プラグイン</value>
   </data>
   <data name="ToolPluginName" xml:space="preserve">
     <value>KCVDB</value>
+  </data>
+  <data name="VersionInfoUrl" xml:space="preserve">
+    <value>http://kcvdb.jp/plugin/version.php</value>
   </data>
   <data name="VersionStringTemplate" xml:space="preserve">
     <value>Version {0}.{1}.{2}</value>
