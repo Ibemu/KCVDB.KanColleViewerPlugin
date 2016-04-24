@@ -215,7 +215,7 @@ namespace KCVDB.KanColleViewerPlugin.Properties {
         }
         
         /// <summary>
-        ///   http://kcvdb.jp/plugin/version.php に類似しているローカライズされた文字列を検索します。
+        ///   http://kcvdb.jp/plugin_version/latest/KCVDB.KanColleViewerPlugin に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string VersionInfoUrl {
             get {
