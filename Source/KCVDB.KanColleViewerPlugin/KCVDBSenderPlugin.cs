@@ -23,7 +23,7 @@ namespace KCVDB.KanColleViewerPlugin
 	[Export(typeof(ILocalizable))]
 	[ExportMetadata("Title", "KCVDBデータ送信プラグイン")]
 	[ExportMetadata("Description", "KCVDBにデータを送信するプラグインです。")]
-	[ExportMetadata("Version", "1.0.0")]
+	[ExportMetadata("Version", Constants.ApplicationVersion)]
 	[ExportMetadata("Author", "艦これ検証部")]
 	[ExportMetadata("Guid", "005EE84C-80B7-4523-A6F9-5D58D97D27C2")]
 	public sealed class KCVDBSenderPlugin : IPlugin, ITool, ILocalizable, IDisposable
