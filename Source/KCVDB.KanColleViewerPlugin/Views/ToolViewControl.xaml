@@ -202,7 +202,9 @@
 				<!--Copyright-->
 				<TextBlock Margin="5,0,0,0">
 					<Run>©</Run>
-					<Hyperlink NavigateUri="{Binding Path=Resources.WebUrl, Mode=OneWay, Source={x:Static app:ResourceHolder.Instance}}">
+					<Hyperlink NavigateUri="{Binding Path=Resources.WebUrl, Mode=OneWay, Source={x:Static app:ResourceHolder.Instance}}"
+							   Command="{Binding Path=OpenUrlCommand}"
+							   CommandParameter="{Binding Path=Resources.WebUrl, Mode=OneWay, Source={x:Static app:ResourceHolder.Instance}}">
 						<Run Text="{Binding Path=Resources.AuthorName, Mode=OneWay, Source={x:Static app:ResourceHolder.Instance}}" />
 					</Hyperlink>
 					<Run Text="{Binding Path=Resources.CopyrightYear, Mode=OneWay, Source={x:Static app:ResourceHolder.Instance}}" />
