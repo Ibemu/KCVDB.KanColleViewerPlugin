@@ -39,15 +39,22 @@ namespace KCVDB.KanColleViewerPlugin.ViewModels.Metrics
 					}
 					catch (Exception ex) {
 						if (ex.IsCritical()) { throw; }
-						TelemetryClient.TrackException("Failed to add transferred api info to the list.", ex);
+						TelemetryClient.TrackException("Failed to add transferred API info to the list.", ex);
 					}
 				}));
 
 			Subscriptions.Add(Observable.Timer(DueTime, Period)
 				.Select(x => {
-					CleanupAndUpdate(DateTimeOffset.Now);
-					return x;
+					try {
+						CleanupAndUpdate(DateTimeOffset.Now);
+						return x;
+					}
+					catch (Exception ex) {
+						TelemetryClient.TrackException("Failed to update (or clean-up) the history queue.", ex);
+						return -1;
+					}
 				})
+				.Where(x => x > 0)
 				.SubscribeOnDispatcher(System.Windows.Threading.DispatcherPriority.Normal)
 				.Subscribe(_ => {
 					try {

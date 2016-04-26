@@ -147,7 +147,6 @@
     <Compile Include="Utilities\MisakuraConverter.cs" />
     <Compile Include="Utilities\WebUtil.cs" />
     <Compile Include="ViewModels\HistoryItem.cs" />
-    <Compile Include="ViewModels\HistoryObservableCollection.cs" />
     <Compile Include="ViewModels\IMetrics.cs" />
     <Compile Include="ViewModels\Metrics\FailureCountMetrics.cs" />
     <Compile Include="ViewModels\Metrics\MetricsBase.cs" />

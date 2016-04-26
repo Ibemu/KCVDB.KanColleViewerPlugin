@@ -14,18 +14,25 @@ namespace KCVDB.KanColleViewerPlugin.ViewModels.Metrics
 		protected TelemetryClient TelemetryClient => TelemetryService.Instance.Client;
 		protected CompositeDisposable Subscriptions { get; } = new CompositeDisposable();
 
-		public string TitleResourceName{get;}
+		public string TitleResourceName { get; }
 
 		public MetricsBase(string titleResourceName)
 		{
 			if (titleResourceName == null) { throw new ArgumentNullException(nameof(titleResourceName)); }
 			TitleResourceName = titleResourceName;
-		
+
 			Subscriptions.Add(Observable.FromEventPattern<PropertyChangedEventArgs>(ResourceHolder.Instance, nameof(ResourceHolder.PropertyChanged))
 				.Where(x => x.EventArgs.PropertyName == nameof(ResourceHolder.Resources))
 				.SubscribeOnDispatcher()
 				.Subscribe(_ => {
-					UpdateTitle();
+					try {
+						UpdateTitle();
+					}
+					catch (Exception ex) {
+						TelemetryClient.TrackException("Failed to update the title", ex, new {
+							TypeName = this.GetType().FullName
+						});
+					}
 				}));
 
 			UpdateTitle();
@@ -70,7 +77,14 @@ namespace KCVDB.KanColleViewerPlugin.ViewModels.Metrics
 
 		protected void UpdateTitle()
 		{
-			this.Title = ResourceHolder.Instance.GetString(TitleResourceName);
+			try {
+				this.Title = ResourceHolder.Instance.GetString(TitleResourceName);
+			}
+			catch (Exception ex) {
+				TelemetryClient.TrackException("Failed to update the title", ex, new {
+					TypeName = this.GetType().FullName
+				});
+			}
 		}
 
 		#region IDisposable メンバ

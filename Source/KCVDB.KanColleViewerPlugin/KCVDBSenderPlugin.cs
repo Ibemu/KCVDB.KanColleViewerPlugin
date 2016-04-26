@@ -38,6 +38,15 @@ namespace KCVDB.KanColleViewerPlugin
 
 			TelemetryClient.TrackEvent("PluginLoaded");
 
+			// Set a hook to detect app crash
+			try {
+				var app = LocalizationUtil.GetApplication();
+				app.DispatcherUnhandledException += App_DispatcherUnhandledException;
+			}
+			catch (Exception ex) {
+				TelemetryClient.TrackException("Failed to set set a hook to detect app crash.", ex);
+			}
+
 			// Obtain default app culture
 			try {
 				ResourceHolder.Instance.Culture = LocalizationUtil.GetCurrentAppCulture();
@@ -71,6 +80,12 @@ namespace KCVDB.KanColleViewerPlugin
 				TelemetryClient.TrackException("Failed to check the latest version.", ex);
 				if (ex.IsCritical()) { throw; }
 			}
+		}
+
+		private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+		{
+			TelemetryClient.TrackException("Unhandled exception detected.", e.Exception);
+			TelemetryClient.Flush();
 		}
 
 		async Task CheckForUpdate()
