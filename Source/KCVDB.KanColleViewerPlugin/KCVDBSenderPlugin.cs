@@ -41,7 +41,7 @@ namespace KCVDB.KanColleViewerPlugin
 			// Obtain default app culture
 			try {
 				ResourceHolder.Instance.Culture = LocalizationUtil.GetCurrentAppCulture();
-				UpdateChineseCulture();
+				UpdateChineseCulture();				
 			}
 			catch (Exception ex) {
 				TelemetryClient.TrackException("Failed to get default app culture.", ex);
@@ -134,7 +134,8 @@ namespace KCVDB.KanColleViewerPlugin
 		public void ChangeCulture(string cultureName)
 		{
 			TelemetryClient.TrackEvent("CultureChanged", new {
-				CultureName = cultureName
+				CurrentCulture = ResourceHolder.Instance.Culture?.Name ?? "auto",
+				NewCultureName = cultureName ?? "auto",
 			});
 
 			if (cultureName == null) {
