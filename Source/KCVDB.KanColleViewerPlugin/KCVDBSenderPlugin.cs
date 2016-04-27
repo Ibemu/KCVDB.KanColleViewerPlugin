@@ -23,7 +23,7 @@ namespace KCVDB.KanColleViewerPlugin
 	[Export(typeof(ILocalizable))]
 	[ExportMetadata("Title", "KCVDBデータ送信プラグイン")]
 	[ExportMetadata("Description", "KCVDBにデータを送信するプラグインです。")]
-	[ExportMetadata("Version", "1.0.0")]
+	[ExportMetadata("Version", Constants.ApplicationVersion)]
 	[ExportMetadata("Author", "艦これ検証部")]
 	[ExportMetadata("Guid", "005EE84C-80B7-4523-A6F9-5D58D97D27C2")]
 	public sealed class KCVDBSenderPlugin : IPlugin, ITool, ILocalizable, IDisposable
@@ -38,10 +38,19 @@ namespace KCVDB.KanColleViewerPlugin
 
 			TelemetryClient.TrackEvent("PluginLoaded");
 
+			// Set a hook to detect app crash
+			try {
+				var app = LocalizationUtil.GetApplication();
+				app.DispatcherUnhandledException += App_DispatcherUnhandledException;
+			}
+			catch (Exception ex) {
+				TelemetryClient.TrackException("Failed to set set a hook to detect app crash.", ex);
+			}
+
 			// Obtain default app culture
 			try {
 				ResourceHolder.Instance.Culture = LocalizationUtil.GetCurrentAppCulture();
-				UpdateChineseCulture();
+				UpdateChineseCulture();				
 			}
 			catch (Exception ex) {
 				TelemetryClient.TrackException("Failed to get default app culture.", ex);
@@ -71,6 +80,12 @@ namespace KCVDB.KanColleViewerPlugin
 				TelemetryClient.TrackException("Failed to check the latest version.", ex);
 				if (ex.IsCritical()) { throw; }
 			}
+		}
+
+		private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+		{
+			TelemetryClient.TrackException("Unhandled exception detected.", e.Exception);
+			TelemetryClient.Flush();
 		}
 
 		async Task CheckForUpdate()
@@ -134,7 +149,8 @@ namespace KCVDB.KanColleViewerPlugin
 		public void ChangeCulture(string cultureName)
 		{
 			TelemetryClient.TrackEvent("CultureChanged", new {
-				CultureName = cultureName
+				CurrentCulture = ResourceHolder.Instance.Culture?.Name ?? "auto",
+				NewCultureName = cultureName ?? "auto",
 			});
 
 			if (cultureName == null) {
